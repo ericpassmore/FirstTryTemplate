@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+  web:
+    init: true
+    build:
+      context: .
+      args:
+        PORT: "${PORT}"
+    volumes:
+      - .:/web
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - db
